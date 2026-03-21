@@ -4,13 +4,20 @@ import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
 import lombok.AllArgsConstructor;
+import marcelo.project.pricefy.dto.request.LoginRequestDto;
 import marcelo.project.pricefy.dto.request.UserRequestDto;
+import marcelo.project.pricefy.dto.response.LoginResponseDto;
 import marcelo.project.pricefy.dto.response.UserResponseDto;
 import marcelo.project.pricefy.entity.UserModel;
+import marcelo.project.pricefy.repository.UserRepository;
+import marcelo.project.pricefy.security.TokenConfig;
 import marcelo.project.pricefy.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
@@ -22,6 +29,9 @@ public class UserController {
 
     @Autowired
     private final UserService userService;
+    private final AuthenticationManager authenticationManager;
+    private final TokenConfig tokenConfig;
+    private final UserRepository userRepository;
 
     @PostMapping("register")
     @Operation(summary = "Cadastro de usuário",description = "Realiza o cadastro do usuário")
@@ -30,4 +40,15 @@ public class UserController {
         return ResponseEntity.status(HttpStatus.CREATED).body(user);
     }
 
+    @PostMapping("login")
+    @Operation(summary = "Login de usuário", description = "Realiza a autenticação no sistema")
+    public ResponseEntity<LoginResponseDto> login(@Valid @RequestBody LoginRequestDto loginRequestDto){
+        UsernamePasswordAuthenticationToken authToken = new UsernamePasswordAuthenticationToken(loginRequestDto.dsUsername(),loginRequestDto.dsPassowrd());
+        authenticationManager.authenticate(authToken);
+
+        UserModel user = userRepository.findByDsUsername(loginRequestDto.dsUsername());
+        String token = tokenConfig.generateToken(user);
+
+        return ResponseEntity.ok(new LoginResponseDto(token, user.getIdUser(), user.getDsUsername(), user.getDsEmail()));
+    }
 }

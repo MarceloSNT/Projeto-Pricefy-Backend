@@ -6,6 +6,7 @@ import marcelo.project.pricefy.dto.request.UserRequestDto;
 import marcelo.project.pricefy.dto.response.UserResponseDto;
 import marcelo.project.pricefy.entity.UserModel;
 import marcelo.project.pricefy.repository.UserRepository;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 @AllArgsConstructor
@@ -13,6 +14,7 @@ import org.springframework.stereotype.Service;
 public class UserService {
 
     private final UserRepository userRepository;
+    private final PasswordEncoder passwordEncoder;
 
     @Transactional
     public UserResponseDto createUser(UserRequestDto userRequest){
@@ -21,7 +23,7 @@ public class UserService {
         user.setIdUser(userRequest.idUser());
         user.setDsUsername(userRequest.dsUsername());
         user.setDsEmail(userRequest.dsEmail());
-        user.setDsPassword(userRequest.dsPassword());
+        user.setDsPassword(passwordEncoder.encode(userRequest.dsPassword()));
 
         UserModel userSaved = userRepository.save(user);
 
@@ -32,4 +34,5 @@ public class UserService {
                 userSaved.getDsPassword()
         );
     }
+
 }
