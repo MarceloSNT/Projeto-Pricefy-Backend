@@ -68,4 +68,11 @@ public class UserController {
     public ResponseEntity<UserResponseDto> editUser(@PathVariable Long idUser, @Valid @RequestBody UserRequestEditDto userRequestEditDto){
         return ResponseEntity.status(HttpStatus.OK).body(userService.edit(userRequestEditDto, idUser));
     }
+
+    @DeleteMapping("delete/{idUser}")
+    @PreAuthorize("#idUser == authentication.principal.idUser")
+    @Operation(summary = "Deletar usuário",description = "Deletar usuário pelo idUser")
+    public void deleteUser(Long idUser){
+        userService.deleteById(idUser);
+    }
 }

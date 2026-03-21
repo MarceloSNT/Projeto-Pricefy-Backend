@@ -57,4 +57,13 @@ public class UserService {
                 userSaved.getDsPassword()
         );
     }
+
+    @Transactional
+    public void deleteById(Long idUser){
+        if (!userRepository.existsById(idUser)){
+            throw new RuntimeException("Usuário não encontrado");
+        }
+         userRepository.deleteById(idUser);
+
+    }
 }
