@@ -1,11 +1,12 @@
-package marcelo.project.pricefy.Controller;
+package marcelo.project.pricefy.controller;
 
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
 import lombok.AllArgsConstructor;
-import marcelo.project.pricefy.dto.request.LoginRequestDto;
-import marcelo.project.pricefy.dto.request.UserRequestDto;
+import marcelo.project.pricefy.dto.request.user.LoginRequestDto;
+import marcelo.project.pricefy.dto.request.user.UserRequestDto;
+import marcelo.project.pricefy.dto.request.user.UserRequestEditDto;
 import marcelo.project.pricefy.dto.response.LoginResponseDto;
 import marcelo.project.pricefy.dto.response.UserResponseDto;
 import marcelo.project.pricefy.entity.UserModel;
@@ -18,7 +19,6 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
-import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.Optional;
@@ -58,7 +58,14 @@ public class UserController {
     @GetMapping("listUser/{idUser}")
     @PreAuthorize("#idUser == authentication.principal.idUser")
     @Operation(summary = "Buscar usuário pelo id", description = "Busca usuário pole id informado")
-    public Optional<UserResponseDto> listByIdUser(@PathVariable Long idUser){
+    public UserModel listByIdUser(@PathVariable Long idUser){
         return userService.listById(idUser);
+    }
+
+    @PutMapping("edit/{idUser}")
+    @PreAuthorize("#idUser == authentication.principal.idUser")
+    @Operation(summary = "Editar usuário", description = "Editar dados parciais do usuário")
+    public ResponseEntity<UserResponseDto> editUser(@PathVariable Long idUser, @Valid @RequestBody UserRequestEditDto userRequestEditDto){
+        return ResponseEntity.status(HttpStatus.OK).body(userService.edit(userRequestEditDto, idUser));
     }
 }

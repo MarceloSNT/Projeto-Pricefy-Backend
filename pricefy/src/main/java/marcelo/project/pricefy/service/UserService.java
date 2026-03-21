@@ -2,17 +2,14 @@ package marcelo.project.pricefy.service;
 
 import jakarta.transaction.Transactional;
 import lombok.AllArgsConstructor;
-import marcelo.project.pricefy.dto.request.UserRequestDto;
+import marcelo.project.pricefy.utils.Utils;
+import marcelo.project.pricefy.dto.request.user.UserRequestDto;
+import marcelo.project.pricefy.dto.request.user.UserRequestEditDto;
 import marcelo.project.pricefy.dto.response.UserResponseDto;
 import marcelo.project.pricefy.entity.UserModel;
 import marcelo.project.pricefy.repository.UserRepository;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
-
-import java.util.List;
-import java.util.Optional;
 
 @AllArgsConstructor
 @Service
@@ -41,7 +38,23 @@ public class UserService {
     }
 
     @Transactional
-    public Optional<UserResponseDto> listById(Long id) {
+    public UserModel listById(Long id) {
         return userRepository.findByIdUser(id);
+    }
+
+    @Transactional
+    public UserResponseDto edit(UserRequestEditDto userRequestEditDto, Long idUser){
+        UserModel user = userRepository.findByIdUser(idUser);
+
+        Utils.copyNonNullProperties(userRequestEditDto, user);
+
+        UserModel userSaved = userRepository.save(user);
+
+        return new UserResponseDto(
+                userSaved.getIdUser(),
+                userSaved.getDsUsername(),
+                userSaved.getDsEmail(),
+                userSaved.getDsPassword()
+        );
     }
 }
