@@ -15,10 +15,13 @@ import marcelo.project.pricefy.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.Optional;
 
 @RestController
 @CrossOrigin("*")
@@ -50,5 +53,12 @@ public class UserController {
         String token = tokenConfig.generateToken(user);
 
         return ResponseEntity.ok(new LoginResponseDto(token, user.getIdUser(), user.getDsUsername(), user.getDsEmail()));
+    }
+
+    @GetMapping("listUser/{idUser}")
+    @PreAuthorize("#idUser == authentication.principal.idUser")
+    @Operation(summary = "Buscar usuário pelo id", description = "Busca usuário pole id informado")
+    public Optional<UserResponseDto> listByIdUser(@PathVariable Long idUser){
+        return userService.listById(idUser);
     }
 }

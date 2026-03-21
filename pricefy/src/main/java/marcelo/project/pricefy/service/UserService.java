@@ -6,8 +6,13 @@ import marcelo.project.pricefy.dto.request.UserRequestDto;
 import marcelo.project.pricefy.dto.response.UserResponseDto;
 import marcelo.project.pricefy.entity.UserModel;
 import marcelo.project.pricefy.repository.UserRepository;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
+
+import java.util.List;
+import java.util.Optional;
 
 @AllArgsConstructor
 @Service
@@ -35,4 +40,8 @@ public class UserService {
         );
     }
 
+    @Transactional
+    public Optional<UserResponseDto> listById(Long id) {
+        return userRepository.findByIdUser(id);
+    }
 }
