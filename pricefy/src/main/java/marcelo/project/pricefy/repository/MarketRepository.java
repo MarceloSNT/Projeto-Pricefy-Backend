@@ -1,4 +1,11 @@
 package marcelo.project.pricefy.repository;
 
-public interface MarketRepository {
+import marcelo.project.pricefy.entity.MarketModel;
+import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.stereotype.Repository;
+
+@Repository
+public interface MarketRepository extends JpaRepository<MarketModel, Long> {
+
+    MarketModel findByIdMarket (Long idMarket);
 }
