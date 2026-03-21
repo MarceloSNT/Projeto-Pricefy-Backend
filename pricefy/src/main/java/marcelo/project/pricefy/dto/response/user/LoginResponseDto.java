@@ -1,4 +1,4 @@
-package marcelo.project.pricefy.dto.response;
+package marcelo.project.pricefy.dto.response.user;
 
 public record LoginResponseDto(
         String token,

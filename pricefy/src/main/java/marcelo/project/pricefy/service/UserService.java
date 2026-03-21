@@ -5,7 +5,7 @@ import lombok.AllArgsConstructor;
 import marcelo.project.pricefy.utils.Utils;
 import marcelo.project.pricefy.dto.request.user.UserRequestDto;
 import marcelo.project.pricefy.dto.request.user.UserRequestEditDto;
-import marcelo.project.pricefy.dto.response.UserResponseDto;
+import marcelo.project.pricefy.dto.response.user.UserResponseDto;
 import marcelo.project.pricefy.entity.UserModel;
 import marcelo.project.pricefy.repository.UserRepository;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -56,5 +56,14 @@ public class UserService {
                 userSaved.getDsEmail(),
                 userSaved.getDsPassword()
         );
+    }
+
+    @Transactional
+    public void deleteById(Long idUser){
+        if (!userRepository.existsById(idUser)){
+            throw new RuntimeException("Usuário não encontrado");
+        }
+         userRepository.deleteById(idUser);
+
     }
 }

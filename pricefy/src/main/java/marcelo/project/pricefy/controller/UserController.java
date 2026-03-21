@@ -7,8 +7,8 @@ import lombok.AllArgsConstructor;
 import marcelo.project.pricefy.dto.request.user.LoginRequestDto;
 import marcelo.project.pricefy.dto.request.user.UserRequestDto;
 import marcelo.project.pricefy.dto.request.user.UserRequestEditDto;
-import marcelo.project.pricefy.dto.response.LoginResponseDto;
-import marcelo.project.pricefy.dto.response.UserResponseDto;
+import marcelo.project.pricefy.dto.response.user.LoginResponseDto;
+import marcelo.project.pricefy.dto.response.user.UserResponseDto;
 import marcelo.project.pricefy.entity.UserModel;
 import marcelo.project.pricefy.repository.UserRepository;
 import marcelo.project.pricefy.security.TokenConfig;
@@ -20,8 +20,6 @@ import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.web.bind.annotation.*;
-
-import java.util.Optional;
 
 @RestController
 @CrossOrigin("*")
@@ -67,5 +65,12 @@ public class UserController {
     @Operation(summary = "Editar usuário", description = "Editar dados parciais do usuário")
     public ResponseEntity<UserResponseDto> editUser(@PathVariable Long idUser, @Valid @RequestBody UserRequestEditDto userRequestEditDto){
         return ResponseEntity.status(HttpStatus.OK).body(userService.edit(userRequestEditDto, idUser));
+    }
+
+    @DeleteMapping("delete/{idUser}")
+    @PreAuthorize("#idUser == authentication.principal.idUser")
+    @Operation(summary = "Deletar usuário",description = "Deletar usuário pelo idUser")
+    public void deleteUser(Long idUser){
+        userService.deleteById(idUser);
     }
 }

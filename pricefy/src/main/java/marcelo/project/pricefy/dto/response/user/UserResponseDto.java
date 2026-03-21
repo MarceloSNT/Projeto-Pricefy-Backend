@@ -1,4 +1,4 @@
-package marcelo.project.pricefy.dto.response;
+package marcelo.project.pricefy.dto.response.user;
 
 import io.swagger.v3.oas.annotations.media.Schema;
 
