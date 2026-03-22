@@ -49,4 +49,12 @@ public class ProductController {
 
         return ResponseEntity.ok(productService.editProduct(idProduct, idUser, productRequestEditDto));
     }
+
+    @DeleteMapping("delete/{idProduct}")
+    @Operation(summary = "Deletar produto", description = "Deletar o produto do mesmo usuário")
+    public void deleteByUser(@PathVariable Long idProduct, HttpServletRequest request){
+        Long idUser = (Long) request.getAttribute("idUser");
+        productService.deleteProduct(idProduct,idUser);
+    }
+
 }

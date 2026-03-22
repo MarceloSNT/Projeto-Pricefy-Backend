@@ -48,7 +48,7 @@ public class MarketService {
     public MarketResponseDto editMarket(Long idMarket, Long idUser, MarketRequestEditDto marketRequestDto) {
         MarketModel market = marketRepository
                 .findByIdMarketAndUser_IdUser(idMarket, idUser)
-                .orElseThrow(() -> new RuntimeException("Mercado não encontrado ou sem permissão " + idUser));
+                .orElseThrow(() -> new RuntimeException("Mercado não encontrado ou sem permissão"));
 
         Utils.copyNonNullProperties(marketRequestDto, market);
 

@@ -60,4 +60,12 @@ public class ProductService {
                 productEdit.getUser().getDsUsername()
         );
     }
+
+    @Transactional
+    public void deleteProduct(Long idProduct, Long idUser){
+        ProductModel product = productRepository.findByIdProductAndUser_IdUser(idProduct, idUser)
+                .orElseThrow(() -> new RuntimeException("Produto não encontrado ou sem permissão"));
+
+        productRepository.delete(product);
+    }
 }
