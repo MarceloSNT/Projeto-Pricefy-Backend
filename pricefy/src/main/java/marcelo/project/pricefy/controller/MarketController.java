@@ -2,9 +2,11 @@ package marcelo.project.pricefy.controller;
 
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
+import jakarta.servlet.http.HttpServletRequest;
 import jakarta.validation.Valid;
 import lombok.AllArgsConstructor;
 import marcelo.project.pricefy.dto.request.market.MarketRequestDto;
+import marcelo.project.pricefy.dto.request.market.MarketRequestEditDto;
 import marcelo.project.pricefy.dto.response.market.MarketResponseDto;
 import marcelo.project.pricefy.entity.MarketModel;
 import marcelo.project.pricefy.service.MarketService;
@@ -38,5 +40,16 @@ public class MarketController {
     @PreAuthorize("#idUser == authentication.principal.idUser")
     public ResponseEntity<List<MarketModel>> listAllByUser(@PathVariable Long idUser){
         return ResponseEntity.status(HttpStatus.OK).body(marketService.listingAllByUser(idUser));
+    }
+
+    @PutMapping("edit/{idMarket}")
+    @Operation(summary = "Editar de mercado", description = "Editar o mercado do mesmo usuário")
+    public ResponseEntity<MarketResponseDto> editMarketByUser(@PathVariable Long idMarket,
+                                                              HttpServletRequest request,
+                                                              @RequestBody MarketRequestEditDto marketRequestDto){
+
+        Long idUser = (Long) request.getAttribute("idUser");
+
+        return ResponseEntity.status(HttpStatus.OK).body(marketService.editMarket(idMarket, idUser, marketRequestDto));
     }
 }

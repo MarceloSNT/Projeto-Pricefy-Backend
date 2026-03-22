@@ -1,4 +1,6 @@
 package marcelo.project.pricefy.dto.request.market;
 
-public record MarketRequestEditDto() {
+public record MarketRequestEditDto(
+        String dsName
+) {
 }
