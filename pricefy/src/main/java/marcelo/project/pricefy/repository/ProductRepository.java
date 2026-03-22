@@ -1,4 +1,7 @@
 package marcelo.project.pricefy.repository;
 
-public interface ProductRepository {
+import marcelo.project.pricefy.entity.ProductModel;
+import org.springframework.data.jpa.repository.JpaRepository;
+
+public interface ProductRepository extends JpaRepository<ProductModel, Long> {
 }
