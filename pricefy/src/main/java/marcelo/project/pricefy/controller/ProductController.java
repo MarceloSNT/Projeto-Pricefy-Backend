@@ -57,4 +57,11 @@ public class ProductController {
         productService.deleteProduct(idProduct,idUser);
     }
 
+    @DeleteMapping("deleteAll/{idUser}")
+    @Operation(summary = "Deletar todos produto", description = "Deletar todos os produtos do mesmo usuário")
+    @PreAuthorize("#idUser == authentication.principal.idUser")
+    public void deleteAllByUser(@PathVariable Long idUser){
+        productService.deleteAllProduct(idUser);
+    }
+
 }
