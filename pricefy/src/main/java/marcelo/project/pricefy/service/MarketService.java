@@ -59,4 +59,11 @@ public class MarketService {
                 marketEdit.getUser().getDsUsername()
         );
     }
+
+    @Transactional
+    public void deleteByUser(Long idMarket, Long idUser){
+        MarketModel market = marketRepository.findByIdMarketAndUser_IdUser(idMarket, idUser).orElseThrow(() -> new RuntimeException("Mercado não encontrado ou sem permissão"));
+
+        marketRepository.delete(market);
+    }
 }

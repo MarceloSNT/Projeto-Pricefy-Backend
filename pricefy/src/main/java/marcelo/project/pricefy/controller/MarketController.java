@@ -52,4 +52,12 @@ public class MarketController {
 
         return ResponseEntity.status(HttpStatus.OK).body(marketService.editMarket(idMarket, idUser, marketRequestDto));
     }
+
+    @DeleteMapping("delete/{idMarket}")
+    @Operation(summary = "Deletar mercado", description = "Deletar o mercado do mesmo usuário")
+    public void deleteByUser(@PathVariable Long idMarket, HttpServletRequest request){
+        Long idUser = (Long) request.getAttribute("idUser");
+        marketService.deleteByUser(idMarket,idUser);
+    }
+
 }
