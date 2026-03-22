@@ -6,12 +6,15 @@ import jakarta.validation.Valid;
 import lombok.AllArgsConstructor;
 import marcelo.project.pricefy.dto.request.market.MarketRequestDto;
 import marcelo.project.pricefy.dto.response.market.MarketResponseDto;
+import marcelo.project.pricefy.entity.MarketModel;
 import marcelo.project.pricefy.service.MarketService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
 
 @RestController
 @CrossOrigin
@@ -28,5 +31,12 @@ public class MarketController {
     @PreAuthorize("#idUser == authentication.principal.idUser")
     public ResponseEntity<MarketResponseDto> createMarket(@PathVariable Long idUser,@Valid @RequestBody MarketRequestDto marketRequestDto){
         return ResponseEntity.status(HttpStatus.CREATED).body(marketService.createMarket(idUser, marketRequestDto));
+    }
+
+    @GetMapping("listAll/{idUser}")
+    @Operation(summary = "Lista de mercado", description = "Listar todos os mercados do mesmo usuário")
+    @PreAuthorize("#idUser == authentication.principal.idUser")
+    public ResponseEntity<List<MarketModel>> listAllByUser(@PathVariable Long idUser){
+        return ResponseEntity.status(HttpStatus.OK).body(marketService.listingAllByUser(idUser));
     }
 }
