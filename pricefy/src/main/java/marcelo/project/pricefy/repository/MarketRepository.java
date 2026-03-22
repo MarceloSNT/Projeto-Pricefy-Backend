@@ -10,9 +10,9 @@ import java.util.Optional;
 @Repository
 public interface MarketRepository extends JpaRepository<MarketModel, Long> {
 
-    MarketModel findByIdMarket (Long idMarket);
-
     Optional<MarketModel> findByIdMarketAndUser_IdUser (Long idMarket, Long idUser);
 
     List<MarketModel> findAllByUser_IdUser (Long idUser);
+
+    void deleteAllByUser_IdUser(Long idUser);
 }

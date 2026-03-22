@@ -22,8 +22,8 @@ public class MarketService {
     private final UserRepository userRepository;
 
     @Transactional
-    public MarketResponseDto createMarket(Long idUser, MarketRequestDto marketRequestDto){
-        UserModel user  = userRepository.findByIdUser(idUser);
+    public MarketResponseDto createMarket(Long idUser, MarketRequestDto marketRequestDto) {
+        UserModel user = userRepository.findByIdUser(idUser);
         MarketModel market = new MarketModel();
 
         market.setIdMarket(marketRequestDto.idMarket());
@@ -40,12 +40,12 @@ public class MarketService {
     }
 
     @Transactional
-    public List<MarketModel> listingAllByUser(Long idUser){
+    public List<MarketModel> listingAllByUser(Long idUser) {
         return marketRepository.findAllByUser_IdUser(idUser);
     }
 
     @Transactional
-    public MarketResponseDto editMarket(Long idMarket, Long idUser, MarketRequestEditDto marketRequestDto){
+    public MarketResponseDto editMarket(Long idMarket, Long idUser, MarketRequestEditDto marketRequestDto) {
         MarketModel market = marketRepository
                 .findByIdMarketAndUser_IdUser(idMarket, idUser)
                 .orElseThrow(() -> new RuntimeException("Mercado não encontrado ou sem permissão " + idUser));
@@ -61,9 +61,14 @@ public class MarketService {
     }
 
     @Transactional
-    public void deleteByUser(Long idMarket, Long idUser){
+    public void deleteByUser(Long idMarket, Long idUser) {
         MarketModel market = marketRepository.findByIdMarketAndUser_IdUser(idMarket, idUser).orElseThrow(() -> new RuntimeException("Mercado não encontrado ou sem permissão"));
 
         marketRepository.delete(market);
+    }
+
+    @Transactional
+    public void deleteAllByUser(Long idUser) {
+         marketRepository.deleteAllByUser_IdUser(idUser);
     }
 }

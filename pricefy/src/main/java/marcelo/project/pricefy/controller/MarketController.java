@@ -32,6 +32,7 @@ public class MarketController {
     @Operation(summary = "Criação de mercado", description = "Criar mercado")
     @PreAuthorize("#idUser == authentication.principal.idUser")
     public ResponseEntity<MarketResponseDto> createMarket(@PathVariable Long idUser,@Valid @RequestBody MarketRequestDto marketRequestDto){
+
         return ResponseEntity.status(HttpStatus.CREATED).body(marketService.createMarket(idUser, marketRequestDto));
     }
 
@@ -58,6 +59,13 @@ public class MarketController {
     public void deleteByUser(@PathVariable Long idMarket, HttpServletRequest request){
         Long idUser = (Long) request.getAttribute("idUser");
         marketService.deleteByUser(idMarket,idUser);
+    }
+
+    @DeleteMapping("deleteAll/{idUser}")
+    @Operation(summary = "Deletar todos os mercados", description = "Deletar todos os mercados do mesmo usuário")
+    @PreAuthorize("#idUser == authentication.principal.idUser")
+    public void deleteAllByUser(@PathVariable Long idUser){
+        marketService.deleteAllByUser(idUser);
     }
 
 }
