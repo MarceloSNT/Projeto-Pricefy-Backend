@@ -3,11 +3,14 @@ package marcelo.project.pricefy.service;
 import jakarta.transaction.Transactional;
 import lombok.AllArgsConstructor;
 import marcelo.project.pricefy.dto.request.product.ProductRequestDto;
+import marcelo.project.pricefy.dto.request.product.ProductRequestEditDto;
 import marcelo.project.pricefy.dto.response.product.ProductResponseDto;
+import marcelo.project.pricefy.entity.MarketModel;
 import marcelo.project.pricefy.entity.ProductModel;
 import marcelo.project.pricefy.entity.UserModel;
 import marcelo.project.pricefy.repository.ProductRepository;
 import marcelo.project.pricefy.repository.UserRepository;
+import marcelo.project.pricefy.utils.Utils;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -40,5 +43,21 @@ public class ProductService {
     @Transactional
     public List<ProductModel> listAllByUser(Long idUser){
         return productRepository.findAllByUser_IdUser(idUser);
+    }
+
+    @Transactional
+    public ProductResponseDto editProduct(Long idProduct, Long idUser, ProductRequestEditDto productRequestEditDto){
+        ProductModel product = productRepository
+                .findByIdProductAndUser_IdUser(idProduct, idUser)
+                .orElseThrow(() -> new RuntimeException("Produto nãp encontrado ou sem permissão"));
+
+        Utils.copyNonNullProperties(productRequestEditDto, product);
+
+        ProductModel productEdit = productRepository.save(product);
+        return new ProductResponseDto(
+                productEdit.getIdProduct(),
+                productEdit.getDsName(),
+                productEdit.getUser().getDsUsername()
+        );
     }
 }

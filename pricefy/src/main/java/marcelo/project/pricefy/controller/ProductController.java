@@ -6,6 +6,7 @@ import jakarta.servlet.http.HttpServletRequest;
 import jakarta.validation.Valid;
 import lombok.AllArgsConstructor;
 import marcelo.project.pricefy.dto.request.product.ProductRequestDto;
+import marcelo.project.pricefy.dto.request.product.ProductRequestEditDto;
 import marcelo.project.pricefy.dto.response.product.ProductResponseDto;
 import marcelo.project.pricefy.entity.ProductModel;
 import marcelo.project.pricefy.service.ProductService;
@@ -39,5 +40,13 @@ public class ProductController {
     @PreAuthorize("#idUser == authentication.principal.idUser")
     public ResponseEntity<List<ProductModel>> listAllProduct(@PathVariable Long idUser){
         return ResponseEntity.ok(productService.listAllByUser(idUser));
+    }
+
+    @PutMapping("edit/{idProduct}")
+    @Operation(summary = "Editar de produto", description = "Editar o produto do mesmo usuário")
+    public ResponseEntity<ProductResponseDto> editProduct(@Valid @RequestBody ProductRequestEditDto productRequestEditDto, @PathVariable Long idProduct, HttpServletRequest request){
+        Long idUser = (Long) request.getAttribute("idUser");
+
+        return ResponseEntity.ok(productService.editProduct(idProduct, idUser, productRequestEditDto));
     }
 }
