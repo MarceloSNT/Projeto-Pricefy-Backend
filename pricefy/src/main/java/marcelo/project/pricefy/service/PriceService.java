@@ -62,8 +62,8 @@ public class PriceService {
     }
 
     @Transactional
-    public PriceResponseDto edit(PriceRequestEditDto priceRequestEditDto, Long idUser, Long idProduct){
-        PriceModel price = priceRepository.findByIdPriceAndUser_IdUser(idProduct, idUser).orElseThrow(() -> new RuntimeException("Preço não encontrado"));
+    public PriceResponseDto edit(PriceRequestEditDto priceRequestEditDto, Long idUser, Long idPrice){
+        PriceModel price = priceRepository.findByIdPriceAndUser_IdUser(idPrice, idUser).orElseThrow(() -> new RuntimeException("Preço não encontrado"));
 
         Utils.copyNonNullProperties(priceRequestEditDto, price);
 
@@ -74,8 +74,13 @@ public class PriceService {
                 priceEdit.getProduct().getDsName(),
                 priceEdit.getMarket().getDsName(),
                 priceEdit.getUser().getDsUsername()
-
         );
+    }
 
+    @Transactional
+    public void deletePrice(Long idUser, Long idPrice){
+        PriceModel price = priceRepository.findByIdPriceAndUser_IdUser(idPrice, idUser).orElseThrow(() -> new RuntimeException("Preço não encontrado ou sem permissão " + idPrice));
+
+        priceRepository.delete(price);
     }
 }

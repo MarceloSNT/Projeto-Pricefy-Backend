@@ -43,16 +43,22 @@ public class PriceController {
         return ResponseEntity.ok(priceService.listingAll(idUser));
     }
 
-    @PutMapping("edit/{idProduct}")
+    @PutMapping("edit/{idPrice}")
     @Operation(summary = "Editar preços", description = "Editar o preço pelo user")
     public ResponseEntity<PriceResponseDto> editPrice(@Valid @RequestBody PriceRequestEditDto priceRequestEditDto,
                                                       HttpServletRequest request,
-                                                      @PathVariable Long idProduct){
+                                                      @PathVariable Long idPrice){
 
         Long idUser = (Long) request.getAttribute("idUser");
 
-        return ResponseEntity.ok(priceService.edit(priceRequestEditDto, idUser, idProduct));
+        return ResponseEntity.ok(priceService.edit(priceRequestEditDto, idUser, idPrice));
     }
 
+    @DeleteMapping("delete/{idPrice}")
+    @Operation(summary = "Deletar preço", description = "Deletar o preço pelo user")
+    public void deletePrice(@PathVariable Long idPrice, HttpServletRequest request){
+        Long idUser = (Long) request.getAttribute("idUser");
+        priceService.deletePrice(idUser, idPrice);
+    }
 
 }
