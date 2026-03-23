@@ -14,6 +14,8 @@ import marcelo.project.pricefy.repository.ProductRepository;
 import marcelo.project.pricefy.repository.UserRepository;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+
 @AllArgsConstructor
 @Service
 public class PriceService {
@@ -50,6 +52,10 @@ public class PriceService {
                 priceSaved.getMarket().getDsName(),
                 priceSaved.getUser().getDsUsername()
         );
+    }
 
+    @Transactional
+    public List<PriceModel> listingAll(Long idUser){
+        return priceRepository.findAllByUser_IdUser(idUser);
     }
 }
