@@ -2,7 +2,7 @@ package marcelo.project.pricefy.dto.response.price;
 
 public record PriceResponseDto(
         Long idPrice,
-        Double vlProduto,
+        Double vlProduct,
         String product,
         String market,
         String user
