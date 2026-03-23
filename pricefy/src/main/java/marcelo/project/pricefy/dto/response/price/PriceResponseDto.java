@@ -1,0 +1,10 @@
+package marcelo.project.pricefy.dto.response.price;
+
+public record PriceResponseDto(
+        Long idPrice,
+        Double vlProduto,
+        String product,
+        String market,
+        String user
+) {
+}
