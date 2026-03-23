@@ -3,6 +3,7 @@ package marcelo.project.pricefy.service;
 import jakarta.transaction.Transactional;
 import lombok.AllArgsConstructor;
 import marcelo.project.pricefy.dto.request.price.PriceRequestDto;
+import marcelo.project.pricefy.dto.request.price.PriceRequestEditDto;
 import marcelo.project.pricefy.dto.response.price.PriceResponseDto;
 import marcelo.project.pricefy.entity.MarketModel;
 import marcelo.project.pricefy.entity.PriceModel;
@@ -12,6 +13,7 @@ import marcelo.project.pricefy.repository.MarketRepository;
 import marcelo.project.pricefy.repository.PriceRepository;
 import marcelo.project.pricefy.repository.ProductRepository;
 import marcelo.project.pricefy.repository.UserRepository;
+import marcelo.project.pricefy.utils.Utils;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -57,5 +59,23 @@ public class PriceService {
     @Transactional
     public List<PriceModel> listingAll(Long idUser){
         return priceRepository.findAllByUser_IdUser(idUser);
+    }
+
+    @Transactional
+    public PriceResponseDto edit(PriceRequestEditDto priceRequestEditDto, Long idUser, Long idProduct){
+        PriceModel price = priceRepository.findByIdPriceAndUser_IdUser(idProduct, idUser).orElseThrow(() -> new RuntimeException("Preço não encontrado"));
+
+        Utils.copyNonNullProperties(priceRequestEditDto, price);
+
+        PriceModel priceEdit = priceRepository.save(price);
+        return new PriceResponseDto(
+                priceEdit.getIdPrice(),
+                priceEdit.getVlProduct(),
+                priceEdit.getProduct().getDsName(),
+                priceEdit.getMarket().getDsName(),
+                priceEdit.getUser().getDsUsername()
+
+        );
+
     }
 }

@@ -2,9 +2,11 @@ package marcelo.project.pricefy.controller;
 
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
+import jakarta.servlet.http.HttpServletRequest;
 import jakarta.validation.Valid;
 import lombok.AllArgsConstructor;
 import marcelo.project.pricefy.dto.request.price.PriceRequestDto;
+import marcelo.project.pricefy.dto.request.price.PriceRequestEditDto;
 import marcelo.project.pricefy.dto.response.price.PriceResponseDto;
 import marcelo.project.pricefy.entity.PriceModel;
 import marcelo.project.pricefy.service.PriceService;
@@ -40,5 +42,17 @@ public class PriceController {
     public ResponseEntity<List<PriceModel>> listingAllPrice(@PathVariable Long idUser){
         return ResponseEntity.ok(priceService.listingAll(idUser));
     }
+
+    @PutMapping("edit/{idProduct}")
+    @Operation(summary = "Editar preços", description = "Editar o preço pelo user")
+    public ResponseEntity<PriceResponseDto> editPrice(@Valid @RequestBody PriceRequestEditDto priceRequestEditDto,
+                                                      HttpServletRequest request,
+                                                      @PathVariable Long idProduct){
+
+        Long idUser = (Long) request.getAttribute("idUser");
+
+        return ResponseEntity.ok(priceService.edit(priceRequestEditDto, idUser, idProduct));
+    }
+
 
 }

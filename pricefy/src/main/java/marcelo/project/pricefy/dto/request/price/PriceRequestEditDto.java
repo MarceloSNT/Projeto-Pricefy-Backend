@@ -1,6 +1,6 @@
 package marcelo.project.pricefy.dto.request.price;
 
 public record PriceRequestEditDto(
-        Double vlProduto
+        Double vlProduct
 ) {
 }
