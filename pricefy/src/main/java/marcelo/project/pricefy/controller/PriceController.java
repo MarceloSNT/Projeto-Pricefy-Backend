@@ -12,6 +12,7 @@ import marcelo.project.pricefy.entity.PriceModel;
 import marcelo.project.pricefy.service.PriceService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
@@ -66,6 +67,20 @@ public class PriceController {
     @PreAuthorize("#idUser == authentication.principal.idUser")
     public void deleteAllByUser(@PathVariable Long idUser){
         priceService.deleteAllPrice(idUser);
+    }
+
+    @GetMapping("/pdf")
+    @Operation(summary = "Listar todos os menores preços", description = "Listar todos os preços do mesmo usuário")
+    public ResponseEntity<byte[]> generatePdf(HttpServletRequest request) {
+
+        Long idUser = (Long) request.getAttribute("idUser");
+        List<PriceResponseDto> items = priceService.findLowestPrices(idUser);
+        byte[] pdf = priceService.generatePdf(items);
+
+        return ResponseEntity.ok()
+                .header("Content-Disposition", "attachment; filename=lista-compras.pdf")
+                .contentType(MediaType.APPLICATION_PDF)
+                .body(pdf);
     }
 
 }
