@@ -9,8 +9,4 @@ public record ProductRequestDto(
     @NotNull(message = "Nome do produto é obrigatório")
     @Schema(description = "Inserir o nome do produto", example = "Arroz parborizado", requiredMode = Schema.RequiredMode.REQUIRED)
     String dsName
-
-//    @NotNull(message = "IdUser é obrigatório")
-//    @Schema(description = "Inserir o id do user", example = "1", requiredMode = Schema.RequiredMode.REQUIRED)
-//    Long idUser
     ) {}
