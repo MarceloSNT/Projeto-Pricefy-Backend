@@ -13,4 +13,6 @@ public interface PriceRepository extends JpaRepository<PriceModel, Long> {
     List<PriceModel> findAllByUser_IdUser (Long idUser);
 
     Optional<PriceModel> findByIdPriceAndUser_IdUser (Long idPrice, Long idUser);
+
+    void deleteAllByUser_IdUser (Long idUser);
 }

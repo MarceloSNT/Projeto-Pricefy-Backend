@@ -83,4 +83,9 @@ public class PriceService {
 
         priceRepository.delete(price);
     }
+
+    @Transactional
+    public void deleteAllPrice(Long idUser){
+        priceRepository.deleteAllByUser_IdUser(idUser);
+    }
 }

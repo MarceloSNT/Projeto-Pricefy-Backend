@@ -61,4 +61,11 @@ public class PriceController {
         priceService.deletePrice(idUser, idPrice);
     }
 
+    @DeleteMapping("deleteAll/{idUser}")
+    @Operation(summary = "Deletar todos os preços", description = "Deletar todos os preços do mesmo usuário")
+    @PreAuthorize("#idUser == authentication.principal.idUser")
+    public void deleteAllByUser(@PathVariable Long idUser){
+        priceService.deleteAllPrice(idUser);
+    }
+
 }
