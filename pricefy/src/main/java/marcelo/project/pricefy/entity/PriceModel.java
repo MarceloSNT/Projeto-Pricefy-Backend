@@ -19,10 +19,8 @@ public class PriceModel {
     private Double vlProduct;
 
     @ManyToOne
-    @JsonIgnore
     private ProductModel product;
 
     @ManyToOne
-    @JsonIgnore
     private MarketModel market;
 }
