@@ -1,5 +1,6 @@
 package marcelo.project.pricefy.entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -18,11 +19,10 @@ public class PriceModel {
     private Double vlProduct;
 
     @ManyToOne
+    @JsonIgnore
     private ProductModel product;
 
     @ManyToOne
+    @JsonIgnore
     private MarketModel market;
-
-    @ManyToOne
-    private UserModel user;
 }
