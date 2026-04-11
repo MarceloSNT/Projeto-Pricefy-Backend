@@ -44,6 +44,13 @@ public class PriceController {
         return ResponseEntity.ok(priceService.listingAll(idUser));
     }
 
+    @GetMapping("listPrices/{idUser}")
+    @Operation(summary = "Listar preços", description = "Listar todos os preços pelo user")
+    @PreAuthorize("#idUser == authentication.principal.idUser")
+    public ResponseEntity<List<PriceResponseDto>> listingPrices(@PathVariable Long idUser){
+        return ResponseEntity.ok(priceService.listPrices(idUser));
+    }
+
     @PutMapping("edit/{idPrice}")
     @Operation(summary = "Editar preços", description = "Editar o preço pelo user")
     public ResponseEntity<PriceResponseDto> editPrice(@Valid @RequestBody PriceRequestEditDto priceRequestEditDto,
