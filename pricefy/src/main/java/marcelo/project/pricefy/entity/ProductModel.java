@@ -1,10 +1,13 @@
 package marcelo.project.pricefy.entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.Generated;
 import lombok.NoArgsConstructor;
+
+import java.util.List;
 
 @Entity
 @Data
@@ -18,6 +21,10 @@ public class ProductModel {
 
     private String dsName;
 
+    @OneToMany(mappedBy = "product", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<PriceModel> prices;
+
     @ManyToOne
+    @JsonIgnore
     private UserModel user;
 }

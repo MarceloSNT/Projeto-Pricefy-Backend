@@ -28,6 +28,12 @@ public class UserModel implements UserDetails {
 
     private String dsPassword;
 
+    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<ProductModel> products;
+
+    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<MarketModel> markets;
+
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
         return List.of();

@@ -44,7 +44,7 @@ public class UserController {
     @PostMapping("login")
     @Operation(summary = "Login de usuário", description = "Realiza a autenticação no sistema")
     public ResponseEntity<LoginResponseDto> login(@Valid @RequestBody LoginRequestDto loginRequestDto){
-        UsernamePasswordAuthenticationToken authToken = new UsernamePasswordAuthenticationToken(loginRequestDto.dsUsername(),loginRequestDto.dsPassowrd());
+        UsernamePasswordAuthenticationToken authToken = new UsernamePasswordAuthenticationToken(loginRequestDto.dsUsername(),loginRequestDto.dsPassword());
         authenticationManager.authenticate(authToken);
 
         UserModel user = userRepository.findByDsUsername(loginRequestDto.dsUsername());

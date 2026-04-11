@@ -4,7 +4,6 @@ public record PriceResponseDto(
         Long idPrice,
         Double vlProduct,
         String product,
-        String market,
-        String user
+        String market
 ) {
 }

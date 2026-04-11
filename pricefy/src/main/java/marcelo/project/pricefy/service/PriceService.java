@@ -43,15 +43,12 @@ public class PriceService {
         MarketModel market = marketRepository.findById(priceRequestDto.market())
                 .orElseThrow(() -> new RuntimeException("Mercado não encontrado"));
 
-        UserModel user = userRepository.findByIdUser(idUser);
-
         PriceModel price = new PriceModel();
 
         price.setIdPrice(priceRequestDto.idPrice());
         price.setVlProduct(priceRequestDto.vlProduto());
         price.setProduct(product);
         price.setMarket(market);
-        price.setUser(user);
 
         PriceModel priceSaved = priceRepository.save(price);
 
@@ -59,19 +56,18 @@ public class PriceService {
                 priceSaved.getIdPrice(),
                 priceSaved.getVlProduct(),
                 priceSaved.getProduct().getDsName(),
-                priceSaved.getMarket().getDsName(),
-                priceSaved.getUser().getDsUsername()
+                priceSaved.getMarket().getDsName()
         );
     }
 
     @Transactional
     public List<PriceModel> listingAll(Long idUser){
-        return priceRepository.findAllByUser_IdUser(idUser);
+        return priceRepository.findAllByProduct_User_IdUser(idUser);
     }
 
     @Transactional
     public PriceResponseDto edit(PriceRequestEditDto priceRequestEditDto, Long idUser, Long idPrice){
-        PriceModel price = priceRepository.findByIdPriceAndUser_IdUser(idPrice, idUser).orElseThrow(() -> new RuntimeException("Preço não encontrado"));
+        PriceModel price = priceRepository.findByIdPriceAndProduct_User_IdUser(idPrice, idUser).orElseThrow(() -> new RuntimeException("Preço não encontrado"));
 
         Utils.copyNonNullProperties(priceRequestEditDto, price);
 
@@ -80,27 +76,26 @@ public class PriceService {
                 priceEdit.getIdPrice(),
                 priceEdit.getVlProduct(),
                 priceEdit.getProduct().getDsName(),
-                priceEdit.getMarket().getDsName(),
-                priceEdit.getUser().getDsUsername()
+                priceEdit.getMarket().getDsName()
         );
     }
 
     @Transactional
     public void deletePrice(Long idUser, Long idPrice){
-        PriceModel price = priceRepository.findByIdPriceAndUser_IdUser(idPrice, idUser).orElseThrow(() -> new RuntimeException("Preço não encontrado ou sem permissão " + idPrice));
+        PriceModel price = priceRepository.findByIdPriceAndProduct_User_IdUser(idPrice, idUser).orElseThrow(() -> new RuntimeException("Preço não encontrado ou sem permissão " + idPrice));
 
         priceRepository.delete(price);
     }
 
     @Transactional
     public void deleteAllPrice(Long idUser){
-        priceRepository.deleteAllByUser_IdUser(idUser);
+        priceRepository.deleteAllByProduct_User_IdUser(idUser);
     }
 
     @Transactional
     public List<PriceResponseDto> findLowestPrices(Long idUser) {
 
-        return priceRepository.findAllByUser_IdUser(idUser)
+        return priceRepository.findAllByProduct_User_IdUser(idUser)
                 .stream()
                 .collect(Collectors.groupingBy(
                         price -> price.getProduct().getIdProduct(),
@@ -113,8 +108,7 @@ public class PriceService {
                         price.getIdPrice(),
                         price.getVlProduct(),
                         price.getProduct().getDsName(),
-                        price.getMarket().getDsName(),
-                        price.getUser().getDsUsername()
+                        price.getMarket().getDsName()
                 ))
                 .toList();
     }
