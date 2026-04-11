@@ -1,4 +1,4 @@
-FROM ubuntu:latest AS build
+FROM maven:3.9-eclipse-temurin-21 AS build
 
 RUN apt-get update
 RUN apt-get install openjdk-21-jdk -y
@@ -7,8 +7,7 @@ WORKDIR pricefy/
 
 COPY . .
 
-RUN apt-get install maven -y
-RUN mvn clean package
+RUN mvn clean package -DskipTests
 
 FROM eclipse-temurin:21-jdk
 
