@@ -20,7 +20,7 @@ public record UserRequestDto(
 
    @NotNull(message = "Senha é obrigatório")
    @Schema(description = "Inserir senha do usuário", example = "usuário.01", requiredMode = Schema.RequiredMode.REQUIRED)
-   @Pattern(regexp ="^(?=.*[a-z])(?=.*[A-Z])(?=.*\\d)(?=.*[@$!%*.?&])[A-Za-z\\d@$!%*?&]{8,}$", message = "Pelo menos 1 letra minúscula (a-z)\n" +
+   @Pattern(regexp ="^(?=.*[a-z])(?=.*[A-Z])(?=.*\\d)(?=.*[@$!%*.?&])[A-Za-z\\d@$!%*.?&]{8,}$", message = "Pelo menos 1 letra minúscula (a-z)\n" +
            "✅ Pelo menos 1 letra maiúscula (A-Z)\n" +
            "✅ Pelo menos 1 número (0-9)\n" +
            "✅ Pelo menos 1 caractere especial (@$!%*?&)\n" +
