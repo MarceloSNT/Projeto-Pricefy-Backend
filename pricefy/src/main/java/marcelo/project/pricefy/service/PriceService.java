@@ -61,7 +61,7 @@ public class PriceService {
     }
 
     @Transactional
-    public List<PriceResponseDto> listingAll(Long idUser){
+    public List<PriceModel> listingAll(Long idUser){
         return priceRepository.findAllByProduct_User_IdUser(idUser);
     }
 
@@ -98,17 +98,17 @@ public class PriceService {
         return priceRepository.findAllByProduct_User_IdUser(idUser)
                 .stream()
                 .collect(Collectors.groupingBy(
-                        price -> price.product(),
-                        Collectors.minBy(Comparator.comparing(PriceResponseDto::vlProduct))
+                        price -> price.getProduct().getIdProduct(),
+                        Collectors.minBy(Comparator.comparing(PriceModel::getVlProduct))
                 ))
                 .values()
                 .stream()
                 .flatMap(Optional::stream)
                 .map(price -> new PriceResponseDto(
-                        price.idPrice(),
-                        price.vlProduct(),
-                        price.market(),
-                        price.product()
+                        price.getIdPrice(),
+                        price.getVlProduct(),
+                        price.getProduct().getDsName(),
+                        price.getMarket().getDsName()
                 ))
                 .toList();
     }
